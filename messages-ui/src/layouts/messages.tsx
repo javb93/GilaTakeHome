@@ -17,6 +17,7 @@ const callMessageApi = async (message: string, category: MessageCategory) => {
   if (!response.ok) {
     throw new Error("Failed to send message");
   }
+  alert("Message sent");
   return response.json();
 };
 const Messages: FC = () => {
@@ -27,9 +28,7 @@ const Messages: FC = () => {
         initialValues={{ category: MessageCategory.Sports, message: "" }}
         validationSchema={messageSchema}
         onSubmit={(values, { setSubmitting }) => {
-          callMessageApi(values.message, values.category).then(() => {
-            alert("Message sent");
-          });
+          callMessageApi(values.message, values.category);
           setSubmitting(false);
         }}
       >
