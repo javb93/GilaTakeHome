@@ -6,19 +6,25 @@ import { MessageCategory } from "../lib/definitions";
 import { StyledForm } from "../components/messages-styled";
 
 const messageCategoryKeys = Object.keys(MessageCategory);
-const callMessageApi = async (message: string, category: MessageCategory) => {
-  const response = await fetch("http://localhost:8080/messages", {
+const callMessageApi = (message: string, category: MessageCategory) => {
+  fetch("http://localhost:8080/messages", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
     body: JSON.stringify({ message, category }),
-  });
-  if (!response.ok) {
-    throw new Error("Failed to send message");
-  }
-  alert("Message sent");
-  return response.json();
+  })
+    .then((res) => {
+      if (!res.ok) {
+        throw new Error("Failed to send message");
+      }
+      alert("Message sent");
+    })
+    .catch((error) => {
+      if (error.message === "Failed to fetch") {
+        alert("Failed to send message, API could be off");
+      }
+    });
 };
 const Messages: FC = () => {
   return (
